@@ -11,13 +11,14 @@ public class test {
 	public static void main(String[] args) {
 		
 		// initialize this configuration
+		// verNo GGGPay Api Version Number, default: v1
 		// apiUrl GGGPay Api Url
 		// appId in developer settings : App Id
 		// key in developer settings : Key
 		// secret in developer settings : secret
 		// serverPubKey in developer settings : Server Public Key
 		// privateKey in developer settings : Private Key
-		gggpayCfg.init(apiUrl, appId, key, secret, serverPubKey, privateKey);
+		gggpayCfg.init(verNo, apiUrl, appId, key, secret, serverPubKey, privateKey);
 		
 		// Here is an example of a recharge 
 		// return recharge result: code=1,message=,transactionId=12817291,paymentUrl=https://www.xxxx...
