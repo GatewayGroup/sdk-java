@@ -11,7 +11,7 @@ public class test {
 	public static void main(String[] args) {
 		
 		// initialize this configuration
-		// verNo GGGPay Api Version Number, default: v1
+		// verNo GGGPay Api Version Number, default: v1 
 		// apiUrl GGGPay Api Url
 		// appId in developer settings : App Id
 		// key in developer settings : Key
