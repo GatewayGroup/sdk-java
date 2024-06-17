@@ -1,21 +1,21 @@
-package gggpay;
+package gateway;
 
 /**
- * gggpay config
- * @author gggpay
+ * gateway config
+ * @author gateway
  *
  */
-public abstract class gggpayCfg
+public abstract class gatewayCfg
 {
     //-- begin configuration ----------------------------------------------------------------------------------
 
 	/**
-	 * GGGPay Api Version Number
+	 * gateway Api Version Number
 	 */
 	static String VERSION_NO = "v1";
 	
     /**
-     * GGGPay Api Url
+     * gateway Api Url
      */
     static String BASE_URL = "http://localhost:3000/";
 
@@ -82,7 +82,7 @@ public abstract class gggpayCfg
 
     /**
      * initialize this configuration
-     * @param apiUrl GGGPay Api Url
+     * @param apiUrl gateway Api Url
      * @param appId in developer settings : App Id
      * @param key in developer settings : Key
      * @param secret in developer settings : secret

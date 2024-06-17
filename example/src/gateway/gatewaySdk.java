@@ -1,4 +1,4 @@
-package gggpay;
+package gateway;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -37,11 +37,11 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * gggpaySdk
- * @author gggpay
+ * gatewaySdk
+ * @author gateway
  *
  */
-public  class gggpaySdk {
+public  class gatewaySdk {
 	/**
 	 * rsa algorithm
 	 */
@@ -76,7 +76,7 @@ public  class gggpaySdk {
         {
             String token = getToken();
             if (token.isEmpty())return result;
-            String requestUrl = "gggpay/" + gggpayCfg.VERSION_NO + "/createPayment";
+            String requestUrl = "gateway/" + gatewayCfg.VERSION_NO + "/createPayment";
             HashMap<String, String> cnst = generateConstant(requestUrl);
             // If callbackUrl and redirectUrl are empty, take the values ​​of [curl] and [rurl] in the developer center.
             // Remember, the format of json and the order of json attributes must be the same as the SDK specifications.
@@ -136,7 +136,7 @@ public  class gggpaySdk {
         {
             String token = getToken();
             if (token.isEmpty())return result;
-            String requestUrl = "gggpay/" + gggpayCfg.VERSION_NO + "/withdrawRequest";
+            String requestUrl = "gateway/" + gatewayCfg.VERSION_NO + "/withdrawRequest";
             HashMap<String, String> cnst = generateConstant(requestUrl);
             // payoutspeed contain "fast", "normal", "slow" ,default is : "fast"
             // Remember, the format of json and the order of json attributes must be the same as the SDK specifications.
@@ -187,7 +187,7 @@ public  class gggpaySdk {
         {
             String token = getToken();
             if (token.isEmpty())return result;
-            String requestUrl = "gggpay/" + gggpayCfg.VERSION_NO + "/getTransactionStatusById";
+            String requestUrl = "gateway/" + gatewayCfg.VERSION_NO + "/getTransactionStatusById";
             HashMap<String, String> cnst = generateConstant(requestUrl);
             // Remember, the format of json and the order of json attributes must be the same as the SDK specifications.
             // The sorting rules of Json attribute data are arranged from [a-z]
@@ -238,12 +238,12 @@ public  class gggpaySdk {
     {
         if (EncryptAuthInfo.equals(""))
         {
-            String authString = stringToBase64(gggpayCfg.CLIENT_ID + ":" + gggpayCfg.CLIENT_SECRET);
+            String authString = stringToBase64(gatewayCfg.CLIENT_ID + ":" + gatewayCfg.CLIENT_SECRET);
             EncryptAuthInfo = publicEncrypt(authString);
         }
         String json = "{\"data\":\"" + EncryptAuthInfo + "\"}";
         String[] keys = new String[] { "code", "encryptedToken" };
-        HashMap<String, String> dict = post("gggpay/" + gggpayCfg.VERSION_NO + "/createToken",  "", "", json, "", "", keys);
+        HashMap<String, String> dict = post("gateway/" + gatewayCfg.VERSION_NO + "/createToken",  "", "", json, "", "", keys);
         String token = "";
         if (!dict.get("code").isEmpty() && !dict.get("encryptedToken").isEmpty() && dict.get("code").equals("1"))
         {
@@ -268,10 +268,10 @@ public  class gggpaySdk {
     private static HashMap<String, String> post(String url,  String token, String signature,String json, String nonceStr, String timestamp, String[] keys) throws IOException, InterruptedException
     {
         HttpClient httpClient =  HttpClient.newHttpClient();
-        if (gggpayCfg.BASE_URL.endsWith("/")) {
-        	url = gggpayCfg.BASE_URL+url;
+        if (gatewayCfg.BASE_URL.endsWith("/")) {
+        	url = gatewayCfg.BASE_URL+url;
         }else {
-        	url = gggpayCfg.BASE_URL+"/"+url;
+        	url = gatewayCfg.BASE_URL+"/"+url;
         }
         URI uri = URI.create(url);
         Builder httpBuilder = HttpRequest.newBuilder(uri)
@@ -437,8 +437,8 @@ public  class gggpaySdk {
     private static String symEncrypt(String message) throws NoSuchAlgorithmException, NoSuchPaddingException, UnsupportedEncodingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException
     {
     	Cipher cipher = Cipher.getInstance(ALGORITHM);
-    	byte[] key = stringToBytes(gggpayCfg.CLIENT_SYMMETRIC_KEY);
-        byte[] iv = generateIv(gggpayCfg.CLIENT_SYMMETRIC_KEY);
+    	byte[] key = stringToBytes(gatewayCfg.CLIENT_SYMMETRIC_KEY);
+        byte[] iv = generateIv(gatewayCfg.CLIENT_SYMMETRIC_KEY);
         IvParameterSpec ivSpec = new IvParameterSpec(iv);
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
         cipher.init(Cipher.ENCRYPT_MODE, keySpec,ivSpec);
@@ -463,8 +463,8 @@ public  class gggpaySdk {
     public static String symDecrypt(String encryptedMessage) throws NoSuchAlgorithmException, NoSuchPaddingException, UnsupportedEncodingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException
     {
     	Cipher cipher = Cipher.getInstance(ALGORITHM);
-        byte[] key = stringToBytes(gggpayCfg.CLIENT_SYMMETRIC_KEY);
-        byte[] iv = generateIv(gggpayCfg.CLIENT_SYMMETRIC_KEY);
+        byte[] key = stringToBytes(gatewayCfg.CLIENT_SYMMETRIC_KEY);
+        byte[] iv = generateIv(gatewayCfg.CLIENT_SYMMETRIC_KEY);
         IvParameterSpec ivSpec = new IvParameterSpec(iv);
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
         cipher.init(Cipher.DECRYPT_MODE, keySpec,ivSpec);
@@ -528,7 +528,7 @@ public  class gggpaySdk {
      */
     private static PublicKey getServerPublicKey() throws NoSuchAlgorithmException, InvalidKeySpecException  {
     	PublicKey publicKey = null;
-    	String key = gggpayCfg.SERVER_PUB_KEY.replace("-----BEGIN PUBLIC KEY-----", "");
+    	String key = gatewayCfg.SERVER_PUB_KEY.replace("-----BEGIN PUBLIC KEY-----", "");
     	key = key.replace("-----END PUBLIC KEY-----", "");
     	key = key.replaceAll("\\n", "");
     	key = key.replaceAll(" ", "");
@@ -547,7 +547,7 @@ public  class gggpaySdk {
      */
     private static PrivateKey getPrivateKey() throws NoSuchAlgorithmException, InvalidKeySpecException {
     	PrivateKey privateKey = null;
-    	String key = gggpayCfg.PRIVATE_KEY.replace("-----BEGIN RSA PRIVATE KEY-----", "");
+    	String key = gatewayCfg.PRIVATE_KEY.replace("-----BEGIN RSA PRIVATE KEY-----", "");
     	key = key.replace("-----END RSA PRIVATE KEY-----", "");
     	key = key.replaceAll("\\n", "");
     	key = key.replaceAll(" ", "");
